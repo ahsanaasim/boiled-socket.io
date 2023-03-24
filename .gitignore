@@ -1,0 +1,9 @@
+node_modules
+/lib
+
+# *.test.ts
+
+.nyc_output
+coverage
+
+build
