@@ -36,15 +36,15 @@ export class Socket {
     });
   };
 
-  public joinRoom = (name: string, socket: IOSocket) => {
-    socket.join('room_' + name);
+  public joinRoom = (room: string, socket: IOSocket) => {
+    socket.join(room);
   };
 
-  public emitToRoomInSpace = (space: Namespace, room: string, data: any) => {
-    space.to(room).emit('connect_msg', data);
+  public emitToRoomInSpace = (name: string, space: Namespace, room: string, data: any) => {
+    space.to(room).emit(name, data);
   };
 
-  public emitToSpace = (space: Namespace, data: any) => {
-    space.emit('connect_msg', data);
+  public emitToSpace = (name: string, space: Namespace, data: any) => {
+    space.emit(name, data);
   };
 }
