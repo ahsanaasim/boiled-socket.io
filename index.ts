@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
+import { Socket } from './src/socket';
 
 const app: Express = express();
 
@@ -9,29 +9,14 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  /* options */
-});
 
-io.use(async (socket, next) => {
-  try {
-    if (socket.handshake.auth.token == 'aa') {
-      next();
-    } else {
-      const err = new Error('unauthorized');
-      next(err);
-    }
-  } catch (e) {
-    next(new Error('unauthorized'));
-  }
-});
+const socket = new Socket(httpServer);
+const space = socket.createNamespace('sessions');
 
-const sessionsNamespace = io.of("/sessions");
-sessionsNamespace.on('connection', (socket) => {
-  socket.join('room_' + socket.handshake.auth.room);
-  console.log(socket.rooms);
-  
-  sessionsNamespace.to('room_' + socket.handshake.auth.room).emit('connect_msg', { test: 'test', room: socket.handshake.auth.room });
+socket.onConnect(space, (s) => {
+  const room = 'room_' + s.handshake.auth.room;
+  socket.joinRoom(room, s);
+  socket.emitToRoomInSpace(space, room, { test: 'test', room: s.handshake.auth.room });
 });
 
 httpServer.listen(3000);
