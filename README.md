@@ -1,7 +1,6 @@
 <p>
 <img src="socketio.png" width="120" alt="Nest Logo" />
 </p>
-<p>Socket.IO Boilerplate</p>
 
 <p>
 
@@ -9,6 +8,6 @@
 
 </p>
 
-## Description
+## Socket.IO Boilerplate
 
 A boilerplate of Socket.IO in Typescript
